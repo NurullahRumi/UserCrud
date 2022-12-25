@@ -3,11 +3,12 @@ package com.example.usercrud.controller;
 import com.example.usercrud.entity.User;
 import com.example.usercrud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class UserController {
 
     @Autowired
