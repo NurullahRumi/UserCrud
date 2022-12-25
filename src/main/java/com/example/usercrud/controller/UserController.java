@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/goto-adduser")
     public String gotoAddUser(){
-        System.out.println("Is it working");
+        System.out.println("Is it working. Testing the git");
         return "add_user";
     }
 
