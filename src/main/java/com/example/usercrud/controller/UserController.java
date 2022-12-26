@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Controller
@@ -26,8 +27,10 @@ public class UserController {
     }
 
     @PostMapping("/adduser")
-    public User addUser(@RequestBody User user){
-        return userService.saveUser(user);
+    public String addUser(@ModelAttribute User user){
+        System.out.println(user);
+        //return userService.saveUser(user);
+        return "add_user";
     }
 
     @PostMapping("/addUsers")
