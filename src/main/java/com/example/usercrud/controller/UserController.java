@@ -2,8 +2,10 @@ package com.example.usercrud.controller;
 
 import com.example.usercrud.entity.User;
 import com.example.usercrud.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLOutput;
@@ -15,8 +17,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
-    public String home(){
+    @GetMapping("/")
+    public String home(Model m){
+        List<User> usr = userService.fetchUsers();
+        m.addAttribute("usr",usr);
         return "index";
     }
 
@@ -27,40 +31,51 @@ public class UserController {
     }
 
     @PostMapping("/adduser")
-    public String addUser(@ModelAttribute User user){
-        System.out.println(user);
-        //return userService.saveUser(user);
-        return "add_user";
+    public String addUser(@ModelAttribute User user, HttpSession session){
+        userService.saveUser(user);
+        session.setAttribute("msg","User added successfully");
+        return "redirect:/";
     }
 
-    @PostMapping("/addUsers")
-    public List<User> addUsers(@RequestBody List<User> users){
-        return userService.saveUsers(users);
-    }
+//    @PostMapping("/addUsers")
+//    public List<User> addUsers(@RequestBody List<User> users){
+//        return userService.saveUsers(users);
+//    }
 
-    @GetMapping("/getUsers")
-    public List<User> getUsers(){
-        return userService.fetchUsers();
-    }
+//    @GetMapping("/getUsers")
+//    public List<User> getUsers(){
+//        return userService.fetchUsers();
+//    }
 
     @GetMapping("/getUserById/{id}")
-    public User getUserById(@PathVariable Long id){
-        return userService.fetchUserById(id);
+    public String getUserById(@PathVariable Long id, Model m){
+        User user = userService.fetchUserById(id);
+        m.addAttribute("user",user);
+        return "edit_user";
     }
 
-    @GetMapping("/getUserByName/{name}")
-    public User getUserByName(@PathVariable String name){
-        return userService.fetchUserByName(name);
-    }
+//    @GetMapping("/getUserByName/{name}")
+//    public User getUserByName(@PathVariable String name){
+//        return userService.fetchUserByName(name);
+//    }
 
-    @DeleteMapping("/removeUserById/{id}")
+    @GetMapping("/removeUserById/{id}")
     public String removeUserById(@PathVariable Long id){
         userService.deleteUserById(id);
-        return "User deleted " + id;
+        return "redirect:/";
     }
 
-    @PutMapping("/update")
-    public User editUser(@RequestBody User user){
-        return userService.updateUser(user);
+//    @PutMapping("/update")
+//    public String editUser(@ModelAttribute User user){
+//        System.out.println(user);
+//        userService.updateUser(user);
+//        return "redirect:/";
+//    }
+
+    @PostMapping("/updater")
+    public String updateUser(@ModelAttribute User user, HttpSession session){
+        userService.saveUser(user);
+        session.setAttribute("msg","User updated successfully.");
+        return "redirect:/";
     }
 }

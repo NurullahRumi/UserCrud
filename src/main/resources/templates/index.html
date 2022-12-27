@@ -11,9 +11,18 @@
     <title>Home page</title>
 </head>
 <body>
+
+<!--User added msg-->
+<!--<div th:if=${session.msg}>-->
+<!--    <div class="alert alert-success" role="alert" th:text="${session.msg}">-->
+<!--    </div>-->
+<!--    <th:block th:text="${#session.removeAttribute('msg')}"></th:block>-->
+<!--</div>-->
+<!--end User added msg-->
+
 <!--Start navvar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Add User</a>
+    <a class="navbar-brand" href="#">User Info</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -39,44 +48,38 @@
             <th scope="col">Name</th>
             <th scope="col">Address</th>
             <th scope="col">Home District</th>
-            <th scope="col">Home District</th>
             <th scope="col">Post Code</th>
             <th scope="col">Email</th>
             <th scope="col">Phone Number</th>
             <th scope="col">Occupation</th>
-            <th scope="col">Occupation</th>
+            <th scope="col">Password</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
+        <tr th:each="u: ${usr}">
+            <th th:text="${u.id}"></th>
+            <td th:text="${u.name}"></td>
+            <td th:text="${u.address}"></td>
+            <td th:text="${u.home_district}"></td>
+            <td th:text="${u.postcode}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.phNo}"></td>
+            <td th:text="${u.work}"></td>
+            <td th:text="${u.password}"></td>
+            <td>
+                <a class="btn btn-sm btn-primary" th:href="@{/getUserById/{id}(id=${u.id})}">Edit</a>
+                <a class="btn btn-sm btn-danger" th:href="@{/removeUserById/{id}(id=${u.id})}">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
 <!--Table End-->
 
+
+
+<footer>Developed by Md. Nurullah Rumi</footer>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
