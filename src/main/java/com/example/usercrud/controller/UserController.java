@@ -3,9 +3,11 @@ package com.example.usercrud.controller;
 import com.example.usercrud.entity.User;
 import com.example.usercrud.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLOutput;
@@ -18,22 +20,25 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/")
-    public String home(Model m){
+    public String home(Model m) {
         List<User> usr = userService.fetchUsers();
-        m.addAttribute("usr",usr);
+        m.addAttribute("usr", usr);
         return "index";
     }
 
     @GetMapping("/goto-adduser")
-    public String gotoAddUser(){
+    public String gotoAddUser() {
         System.out.println("Is it working. Testing the git");
         return "add_user";
     }
 
     @PostMapping("/adduser")
-    public String addUser(@ModelAttribute User user, HttpSession session){
+    public String addUser(@Valid @ModelAttribute User user, HttpSession session, BindingResult result) {
+        if(result.hasErrors()){
+            return "add_user";
+        }
         userService.saveUser(user);
-        session.setAttribute("msg","User added successfully");
+        session.setAttribute("msg", "User added successfully");
         return "redirect:/";
     }
 
@@ -48,9 +53,9 @@ public class UserController {
 //    }
 
     @GetMapping("/getUserById/{id}")
-    public String getUserById(@PathVariable Long id, Model m){
+    public String getUserById(@PathVariable Long id, Model m) {
         User user = userService.fetchUserById(id);
-        m.addAttribute("user",user);
+        m.addAttribute("user", user);
         return "edit_user";
     }
 
@@ -60,7 +65,7 @@ public class UserController {
 //    }
 
     @GetMapping("/removeUserById/{id}")
-    public String removeUserById(@PathVariable Long id){
+    public String removeUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
         return "redirect:/";
     }
@@ -73,9 +78,12 @@ public class UserController {
 //    }
 
     @PostMapping("/updater")
-    public String updateUser(@ModelAttribute User user, HttpSession session){
+    public String updateUser(@Valid @ModelAttribute User user, HttpSession session, BindingResult result) {
+        if (result.hasErrors()) {
+            return "edit_user";
+        }
         userService.saveUser(user);
-        session.setAttribute("msg","User updated successfully.");
+        session.setAttribute("msg", "User updated successfully.");
         return "redirect:/";
     }
 }
